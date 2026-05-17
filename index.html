@@ -280,7 +280,7 @@
 // STEP 1: PASTE YOUR GOOGLE AI API KEY HERE
 // Get one free at: https://aistudio.google.com/app/apikey
 // ============================================================
-const API_KEY = "AIzaSyB1hbnYQD1FGIBCICy2_PfKl8oDRSebDVk";
+const WORKER_URL = "https://gemini-proxy.zaguri.workers.dev";
 
 // ============================================================
 // STEP 2: PASTE YOUR BASE64 PHOTO HERE
@@ -294,13 +294,13 @@ const TAL_PHOTO_MIME = "image/jpeg"; // change to "image/png" if your photo is P
 // Decade prompts — English for best AI results
 // ============================================================
 const decadePrompts = {
-    "1970s": "Transform both people in these photos into a 1970s aesthetic together. Flared jeans, warm film grain, earthy oranges and browns, natural outdoor light, slightly overexposed film look, retro party atmosphere. Composite them together as if photographed at the same moment.",
-    "1980s": "Transform both people in these photos into an 1980s aesthetic together. Big hair, neon accents, shoulder pads, VHS color grading, bold patterns, arcade or nightclub lighting. Composite them together as if photographed at the same moment.",
-    "1990s": "Transform both people in these photos into a 1990s aesthetic together. Grunge or preppy street style, muted palette, baggy clothes or flannel shirts, frosted tips, disposable camera look. Composite them together as if photographed at the same moment.",
-    "2000s": "Transform both people in these photos into a 2000s Y2K aesthetic together. Low-rise jeans, Von Dutch caps, velour tracksuits, chrome accents, early digital photo look with overexposed highlights. Composite them together as if photographed at the same moment.",
-    "2010s": "Transform both people in these photos into a 2010s aesthetic together. Instagram filter warm tones, hipster aesthetic, flannel shirts and skinny jeans, VSCO color grading, artsy cafe or rooftop setting. Composite them together as if photographed at the same moment.",
-    "2020s": "Transform both people in these photos into a 2020s aesthetic together. Cinematic social-media-native look, bold color-grading, editorial fashion, gen-Z streetwear, sharp digital clarity with intentional grain, short-form video frame. Composite them together as if photographed at the same moment.",
-    "future": "Transform both people in these photos into a 2050 futuristic aesthetic. Age both people realistically by approximately 30 years — silver or grey hair, subtle and natural facial aging, distinguished look. Background: sleek sci-fi cityscape, holographic displays, clean metallic architecture. Futuristic fashion — metallic fabrics, minimalist. Cinematic lighting with cool blue and neon cyan accents. Hopeful and aspirational, not dystopian. Composite them together as if photographed at the same moment."
+    "1970s": "Create a fun illustrated portrait of two friends in 1970s style. Use the facial features from the reference photos. Style: warm film grain, earthy oranges and browns, flared jeans, natural outdoor light, retro party atmosphere. Vertical 9:16 format.",
+    "1980s": "Create a fun illustrated portrait of two friends in 1980s style. Use the facial features from the reference photos. Style: big hair, neon accents, VHS color grading, bold patterns, arcade or nightclub lighting. Vertical 9:16 format.",
+    "1990s": "Create a fun illustrated portrait of two friends in 1990s style. Use the facial features from the reference photos. Style: grunge street fashion, muted palette, baggy clothes, disposable camera look. Vertical 9:16 format.",
+    "2000s": "Create a fun illustrated portrait of two friends in Y2K 2000s style. Use the facial features from the reference photos. Style: Von Dutch caps, chrome accents, early digital photo look with overexposed highlights. Vertical 9:16 format.",
+    "2010s": "Create a fun illustrated portrait of two friends in 2010s style. Use the facial features from the reference photos. Style: Instagram warm tones, VSCO color grading, hipster aesthetic, artsy cafe setting. Vertical 9:16 format.",
+    "2020s": "Create a fun illustrated portrait of two friends in 2020s style. Use the facial features from the reference photos. Style: cinematic color-grading, gen-Z streetwear, editorial fashion, bold digital aesthetic. Vertical 9:16 format.",
+    "future": "Create a fun illustrated portrait of two friends in a hopeful 2050 futuristic style. Use the facial features from the reference photos, aged naturally by about 30 years — distinguished silver hair, subtle aging. Style: sci-fi cityscape background, holographic displays, metallic fashion, cool blue and neon cyan lighting. Vertical 9:16 format."
 };
 
 // ============================================================
@@ -444,9 +444,6 @@ function resizeImage(base64, mime, maxPx = 768) {
 }
 
 async function generateImage(guestPhotoBase64, guestMime, decade) {
-    if (API_KEY === "PASTE_YOUR_API_KEY_HERE") {
-        throw new Error("יש להוסיף API key בתוך קוד האפליקציה");
-    }
     if (!TAL_PHOTO_BASE64 || TAL_PHOTO_BASE64.length < 100) {
         throw new Error("יש להוסיף את תמונת טל בתוך קוד האפליקציה");
     }
@@ -460,7 +457,7 @@ async function generateImage(guestPhotoBase64, guestMime, decade) {
     ]);
 
     const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${API_KEY}`,
+        WORKER_URL,
         {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -480,7 +477,7 @@ async function generateImage(guestPhotoBase64, guestMime, decade) {
                             }
                         },
                         {
-                            text: `${prompt} Keep both people clearly recognizable. Generate as a vertical 9:16 portrait, Instagram Story format. Make it look like a genuine photograph of these two people together.`
+                            text: `${prompt} Illustrated artistic style. Vertical 9:16 Instagram Story format. Fun, celebratory mood.`
                         }
                     ]
                 }],
