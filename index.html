@@ -115,27 +115,13 @@
     }
 
     /* Random / gold tile */
-    @keyframes gold-pulse {
-        0%, 100% { box-shadow: 0 0 12px rgba(255,200,50,0.5), 0 0 24px rgba(255,200,50,0.25); }
-        50%       { box-shadow: 0 0 22px rgba(255,200,50,0.9), 0 0 44px rgba(255,200,50,0.45); }
-    }
-    @keyframes gold-shimmer {
-        0%   { background-position: 200% 0; }
-        100% { background-position: -200% 0; }
-    }
     #random-decade-btn {
-        background: linear-gradient(135deg, rgba(255,200,50,0.15), rgba(255,160,0,0.15));
-        border: 2px solid rgba(255,200,50,0.6) !important;
-        animation: gold-pulse 2s ease-in-out infinite;
+        background: linear-gradient(135deg, rgba(255,200,50,0.2), rgba(255,160,0,0.2));
+        border: 2px solid rgba(255,200,50,0.7) !important;
+        box-shadow: 0 0 16px rgba(255,200,50,0.35), 0 0 32px rgba(255,200,50,0.15);
     }
-    #random-decade-btn.active-random {
-        background: linear-gradient(270deg, #ffd700, #ffaa00, #ffe066, #ffaa00, #ffd700);
-        background-size: 300% 100%;
-        animation: gold-shimmer 1.8s linear infinite, gold-pulse 2s ease-in-out infinite;
-        border: 2px solid #ffd700 !important;
-    }
-    #random-decade-btn .random-label { color: #ffd700; text-shadow: 0 0 8px rgba(255,215,0,0.7); }
-    #random-decade-btn .random-dice  { filter: drop-shadow(0 0 6px rgba(255,215,0,0.8)); }
+    #random-decade-btn .random-label { color: #1a1a1a; font-weight: 700; }
+    #random-decade-btn .random-dice  { filter: drop-shadow(0 0 4px rgba(255,215,0,0.6)); }
 
     /* Upload preview */
     #upload-preview {
@@ -395,6 +381,7 @@ decadeTiles.forEach(tile => {
     tile.addEventListener('click', () => {
         // Reset all tiles
         decadeTiles.forEach(t => {
+            if (t.id === 'random-decade-btn') return; // skip random tile
             const isFuture = t.dataset.decade === 'future';
             t.classList.remove('border-2', 'border-primary', 'bg-primary/10', 'shadow-[0_0_20px_rgba(255,45,120,0.3)]', 'future-active');
             if (isFuture) {
@@ -404,11 +391,8 @@ decadeTiles.forEach(tile => {
             }
             const label = t.querySelector('.decade-label');
             const headline = t.querySelector('.decade-headline');
-            label.classList.remove('text-primary');
-            label.classList.add('text-white/70');
-            label.classList.remove('opacity-60');
-            headline.classList.remove('text-primary', 'neon-glow-text');
-            headline.classList.add('text-white');
+            if (label) { label.classList.remove('text-primary'); label.classList.add('text-white/70'); label.classList.remove('opacity-60'); }
+            if (headline) { headline.classList.remove('text-primary', 'neon-glow-text'); headline.classList.add('text-white'); }
         });
 
         // Activate selected tile
