@@ -114,6 +114,29 @@
         color: #00f3ff !important;
     }
 
+    /* Random / gold tile */
+    @keyframes gold-pulse {
+        0%, 100% { box-shadow: 0 0 12px rgba(255,200,50,0.5), 0 0 24px rgba(255,200,50,0.25); }
+        50%       { box-shadow: 0 0 22px rgba(255,200,50,0.9), 0 0 44px rgba(255,200,50,0.45); }
+    }
+    @keyframes gold-shimmer {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+    #random-decade-btn {
+        background: linear-gradient(135deg, rgba(255,200,50,0.15), rgba(255,160,0,0.15));
+        border: 2px solid rgba(255,200,50,0.6) !important;
+        animation: gold-pulse 2s ease-in-out infinite;
+    }
+    #random-decade-btn.active-random {
+        background: linear-gradient(270deg, #ffd700, #ffaa00, #ffe066, #ffaa00, #ffd700);
+        background-size: 300% 100%;
+        animation: gold-shimmer 1.8s linear infinite, gold-pulse 2s ease-in-out infinite;
+        border: 2px solid #ffd700 !important;
+    }
+    #random-decade-btn .random-label { color: #ffd700; text-shadow: 0 0 8px rgba(255,215,0,0.7); }
+    #random-decade-btn .random-dice  { filter: drop-shadow(0 0 6px rgba(255,215,0,0.8)); }
+
     /* Upload preview */
     #upload-preview {
         width: 100%;
@@ -177,9 +200,9 @@
         <div class="flex gap-stack-sm overflow-x-auto no-scrollbar pb-4 -mx-gutter px-gutter" dir="rtl">
 
             <!-- Random decade tile -->
-            <button id="random-decade-btn" class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg flex flex-col items-center justify-center transition-all active:scale-95 border-2 border-dashed border-white/30 hover:border-white/60 bg-white/5 hover:bg-white/10" data-decade="">
-                <span class="text-3xl mb-1">🎲</span>
-                <span class="text-label-sm font-label-sm text-white text-center leading-tight px-1">תבחר<br>בשבילי</span>
+            <button id="random-decade-btn" class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg flex flex-col items-center justify-center transition-all active:scale-95 active-random" data-decade="">
+                <span class="random-dice text-3xl mb-1">🎲</span>
+                <span class="random-label text-label-sm font-bold text-center leading-tight px-1">תבחר<br>בשבילי</span>
             </button>
 
             <button class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border border-primary/20 hover:border-primary/50" data-decade="1970s">
@@ -187,9 +210,9 @@
                 <span class="decade-label text-label-sm font-label-sm text-white/70">שנות ה-70</span>
             </button>
 
-            <button class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border-2 border-primary bg-primary/10 shadow-[0_0_20px_rgba(255,45,120,0.3)]" data-decade="1980s">
-                <span class="decade-headline font-headline-lg text-headline-lg-mobile mb-1 text-primary neon-glow-text">80's</span>
-                <span class="decade-label text-label-sm font-label-sm text-primary">שנות ה-80</span>
+            <button class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border border-primary/20 hover:border-primary/50" data-decade="1980s">
+                <span class="decade-headline font-headline-lg text-headline-lg-mobile mb-1 text-white">80's</span>
+                <span class="decade-label text-label-sm font-label-sm text-white/70">שנות ה-80</span>
             </button>
 
             <button class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border border-primary/20 hover:border-primary/50" data-decade="1990s">
@@ -316,20 +339,22 @@ const decadePrompts = {
 // ============================================================
 let userPhotoBase64 = null;
 let userPhotoMime = "image/jpeg";
-let selectedDecade = "1980s";
+let selectedDecade = "1980s"; // will be overridden by random default
 
 // Random decade button
 // ============================================================
 const DECADES = ['1970s', '1980s', '1990s', '2000s', '2010s', '2020s', 'future'];
 const randomBtn = document.getElementById('random-decade-btn');
-randomBtn.addEventListener('click', () => {
+function pickRandom() {
     const pick = DECADES[Math.floor(Math.random() * DECADES.length)];
     const target = document.querySelector(`.decade-tile[data-decade="${pick}"]`);
     if (target) target.click();
-    // Briefly flash the random button
-    randomBtn.classList.add('border-white/80', 'bg-white/20');
-    setTimeout(() => randomBtn.classList.remove('border-white/80', 'bg-white/20'), 400);
-});
+}
+
+randomBtn.addEventListener('click', pickRandom);
+
+// Random is the default on load
+pickRandom();
 
 // ============================================================
 // Photo upload
