@@ -477,7 +477,7 @@ async function generateImage(guestPhotoBase64, guestMime, decade) {
     console.log("Gemini response:", JSON.stringify(data).substring(0, 500));
 
     const parts = data?.candidates?.[0]?.content?.parts || [];
-    const imagePart = parts.find(p => p.inline_data);
+    const imagePart = parts.find(p => p.inlineData || p.inline_data);
     const textPart = parts.find(p => p.text);
 
     if (!imagePart) {
@@ -487,7 +487,8 @@ async function generateImage(guestPhotoBase64, guestMime, decade) {
         throw new Error("לא התקבלה תמונה מהשרת. " + debugMsg);
     }
 
-    return `data:${imagePart.inline_data.mime_type};base64,${imagePart.inline_data.data}`;
+    const imgData = imagePart.inlineData || imagePart.inline_data;
+    return `data:${imgData.mimeType || imgData.mime_type};base64,${imgData.data}`;
 }
 
 // ============================================================
