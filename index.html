@@ -176,9 +176,15 @@
         <h3 class="font-headline-lg-mobile text-headline-lg-mobile mb-4 text-right text-white">בחרו עשור למסע</h3>
         <div class="flex gap-stack-sm overflow-x-auto no-scrollbar pb-4 -mx-gutter px-gutter" dir="rtl">
 
+            <!-- Random decade tile -->
+            <button id="random-decade-btn" class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg flex flex-col items-center justify-center transition-all active:scale-95 border-2 border-dashed border-white/30 hover:border-white/60 bg-white/5 hover:bg-white/10" data-decade="">
+                <span class="text-3xl mb-1">🎲</span>
+                <span class="text-label-sm font-label-sm text-white text-center leading-tight px-1">תבחר<br>בשבילי</span>
+            </button>
+
             <button class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border border-primary/20 hover:border-primary/50" data-decade="1970s">
                 <span class="decade-headline font-headline-lg text-headline-lg-mobile mb-1 text-white">70's</span>
-                <span class="decade-label text-label-sm font-label-sm opacity-60">שנות ה-70</span>
+                <span class="decade-label text-label-sm font-label-sm text-white/70">שנות ה-70</span>
             </button>
 
             <button class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border-2 border-primary bg-primary/10 shadow-[0_0_20px_rgba(255,45,120,0.3)]" data-decade="1980s">
@@ -188,22 +194,22 @@
 
             <button class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border border-primary/20 hover:border-primary/50" data-decade="1990s">
                 <span class="decade-headline font-headline-lg text-headline-lg-mobile mb-1 text-white">90's</span>
-                <span class="decade-label text-label-sm font-label-sm opacity-60">שנות ה-90</span>
+                <span class="decade-label text-label-sm font-label-sm text-white/70">שנות ה-90</span>
             </button>
 
             <button class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border border-primary/20 hover:border-primary/50" data-decade="2000s">
                 <span class="decade-headline font-headline-lg text-headline-lg-mobile mb-1 text-white">00's</span>
-                <span class="decade-label text-label-sm font-label-sm opacity-60">שנות ה-2000</span>
+                <span class="decade-label text-label-sm font-label-sm text-white/70">שנות ה-2000</span>
             </button>
 
             <button class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border border-primary/20 hover:border-primary/50" data-decade="2010s">
                 <span class="decade-headline font-headline-lg text-headline-lg-mobile mb-1 text-white">10's</span>
-                <span class="decade-label text-label-sm font-label-sm opacity-60">שנות ה-2010</span>
+                <span class="decade-label text-label-sm font-label-sm text-white/70">שנות ה-2010</span>
             </button>
 
             <button class="decade-tile flex-shrink-0 w-32 h-32 rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border border-primary/20 hover:border-primary/50" data-decade="2020s">
                 <span class="decade-headline font-headline-lg text-headline-lg-mobile mb-1 text-white">20's</span>
-                <span class="decade-label text-label-sm font-label-sm opacity-60">שנות ה-20</span>
+                <span class="decade-label text-label-sm font-label-sm text-white/70">שנות ה-20</span>
             </button>
 
             <!-- The Future tile — cyan accent -->
@@ -312,6 +318,19 @@ let userPhotoBase64 = null;
 let userPhotoMime = "image/jpeg";
 let selectedDecade = "1980s";
 
+// Random decade button
+// ============================================================
+const DECADES = ['1970s', '1980s', '1990s', '2000s', '2010s', '2020s', 'future'];
+const randomBtn = document.getElementById('random-decade-btn');
+randomBtn.addEventListener('click', () => {
+    const pick = DECADES[Math.floor(Math.random() * DECADES.length)];
+    const target = document.querySelector(`.decade-tile[data-decade="${pick}"]`);
+    if (target) target.click();
+    // Briefly flash the random button
+    randomBtn.classList.add('border-white/80', 'bg-white/20');
+    setTimeout(() => randomBtn.classList.remove('border-white/80', 'bg-white/20'), 400);
+});
+
 // ============================================================
 // Photo upload
 // ============================================================
@@ -361,7 +380,8 @@ decadeTiles.forEach(tile => {
             const label = t.querySelector('.decade-label');
             const headline = t.querySelector('.decade-headline');
             label.classList.remove('text-primary');
-            label.classList.add('opacity-60');
+            label.classList.add('text-white/70');
+            label.classList.remove('opacity-60');
             headline.classList.remove('text-primary', 'neon-glow-text');
             headline.classList.add('text-white');
         });
@@ -377,7 +397,7 @@ decadeTiles.forEach(tile => {
             const activeLabel = tile.querySelector('.decade-label');
             const activeHeadline = tile.querySelector('.decade-headline');
             activeLabel.classList.add('text-primary');
-            activeLabel.classList.remove('opacity-60');
+            activeLabel.classList.remove('opacity-60', 'text-white/70');
             activeHeadline.classList.add('text-primary', 'neon-glow-text');
             activeHeadline.classList.remove('text-white');
         }
