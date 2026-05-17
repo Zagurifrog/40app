@@ -474,10 +474,17 @@ async function generateImage(guestPhotoBase64, guestMime, decade) {
     }
 
     const data = await response.json();
-    const imagePart = data?.candidates?.[0]?.content?.parts?.find(p => p.inline_data);
+    console.log("Gemini response:", JSON.stringify(data).substring(0, 500));
+
+    const parts = data?.candidates?.[0]?.content?.parts || [];
+    const imagePart = parts.find(p => p.inline_data);
+    const textPart = parts.find(p => p.text);
 
     if (!imagePart) {
-        throw new Error("לא התקבלה תמונה מהשרת. נסו שוב.");
+        const reason = data?.candidates?.[0]?.finishReason || "";
+        const safetyMsg = data?.candidates?.[0]?.safetyRatings ? " (safety filter)" : "";
+        const debugMsg = textPart ? `תגובת טקסט: ${textPart.text.substring(0,100)}` : `סיבה: ${reason}${safetyMsg}`;
+        throw new Error("לא התקבלה תמונה מהשרת. " + debugMsg);
     }
 
     return `data:${imagePart.inline_data.mime_type};base64,${imagePart.inline_data.data}`;
