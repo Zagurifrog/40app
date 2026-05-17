@@ -293,14 +293,16 @@ const TAL_PHOTO_MIME = "image/jpeg"; // change to "image/png" if your photo is P
 // ============================================================
 // Decade prompts — English for best AI results
 // ============================================================
+const BASE_PROMPT = "Casual phone selfie shot, Vertical 9:16 Instagram Story format, both subjects from the reference images crowded close together at the lens, leaning into the frame from each side, holding the phone at arm's length with a slight upward tilt. Easy shoulder-to-shoulder framing, eyes straight into the camera, relaxed everyday expressions. Soft mixed indoor light cutting against direct phone-flash, with mild blown highlights and natural shadow falloff on the faces. Skin reads real - visible pore detail, faint pore-level texture, subtle makeup if any, the odd flyaway hair, minor fabric crease. The setting sits softly behind them, slightly out of focus, with everyday environmental detail still readable. A touch of edge motion blur from a moving hand, gentle lens distortion from how close the phone is, off-center crop, hint of ISO grain, white balance not perfectly clean. Unfiltered, unposed, candid realism - looks like a quick phone snap, not a styled portrait";
+
 const decadePrompts = {
-    "1970s": "Create a fun illustrated portrait of two friends in 1970s style. Use the facial features from the reference photos. Style: warm film grain, earthy oranges and browns, flared jeans, natural outdoor light, retro party atmosphere. Vertical 9:16 format.",
-    "1980s": "Create a fun illustrated portrait of two friends in 1980s style. Use the facial features from the reference photos. Style: big hair, neon accents, VHS color grading, bold patterns, arcade or nightclub lighting. Vertical 9:16 format.",
-    "1990s": "Create a fun illustrated portrait of two friends in 1990s style. Use the facial features from the reference photos. Style: grunge street fashion, muted palette, baggy clothes, disposable camera look. Vertical 9:16 format.",
-    "2000s": "Create a fun illustrated portrait of two friends in Y2K 2000s style. Use the facial features from the reference photos. Style: Von Dutch caps, chrome accents, early digital photo look with overexposed highlights. Vertical 9:16 format.",
-    "2010s": "Create a fun illustrated portrait of two friends in 2010s style. Use the facial features from the reference photos. Style: Instagram warm tones, VSCO color grading, hipster aesthetic, artsy cafe setting. Vertical 9:16 format.",
-    "2020s": "Create a fun illustrated portrait of two friends in 2020s style. Use the facial features from the reference photos. Style: cinematic color-grading, gen-Z streetwear, editorial fashion, bold digital aesthetic. Vertical 9:16 format.",
-    "future": "Create a fun illustrated portrait of two friends in a hopeful 2050 futuristic style. Use the facial features from the reference photos, aged naturally by about 30 years — distinguished silver hair, subtle aging. Style: sci-fi cityscape background, holographic displays, metallic fashion, cool blue and neon cyan lighting. Vertical 9:16 format."
+    "1970s": BASE_PROMPT + " — 1970s era: warm film grain, earthy oranges and browns, flared jeans, retro hairstyles.",
+    "1980s": BASE_PROMPT + " — 1980s era: big voluminous hair, neon accents, shoulder pads, VHS color grading, bold patterns.",
+    "1990s": BASE_PROMPT + " — 1990s era: grunge or preppy style, muted palette, baggy clothes, frosted tips, disposable camera look.",
+    "2000s": BASE_PROMPT + " — 2000s Y2K era: Von Dutch caps, velour tracksuits, chrome accents, low-rise jeans, early digital photo overexposure.",
+    "2010s": BASE_PROMPT + " — 2010s era: Instagram warm tones, VSCO color grading, hipster fashion, flannel shirts.",
+    "2020s": BASE_PROMPT + " — 2020s era: gen-Z streetwear, bold cinematic color-grading, editorial fashion, intentional grain.",
+    "future": BASE_PROMPT + " — 2050 futuristic era: both people aged naturally ~30 years, silver hair, metallic fashion, holographic background elements, cool neon cyan light."
 };
 
 // ============================================================
@@ -477,7 +479,7 @@ async function generateImage(guestPhotoBase64, guestMime, decade) {
                             }
                         },
                         {
-                            text: `${prompt} Illustrated artistic style. Vertical 9:16 Instagram Story format. Fun, celebratory mood.`
+                            text: prompt
                         }
                     ]
                 }],
