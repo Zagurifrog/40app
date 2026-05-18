@@ -597,8 +597,24 @@ async function generateImage(guestPhotoBase64, guestMime, decade) {
 // ============================================================
 // Download
 // ============================================================
-document.getElementById('download-btn').addEventListener('click', () => {
+document.getElementById('download-btn').addEventListener('click', async () => {
     if (!resultImage.src || resultImage.src === window.location.href) return;
+
+    // On iOS Safari, <a download> doesn't work for data: URLs — use Web Share instead
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    if (isIOS && navigator.share) {
+        try {
+            const res = await fetch(resultImage.src);
+            const blob = await res.blob();
+            const file = new File([blob], `happy40_tal_${selectedDecade}.jpg`, { type: 'image/jpeg' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({ files: [file], title: 'יום הולדת 40 של טל! 🎉' });
+                return;
+            }
+        } catch (e) { /* fall through */ }
+    }
+
+    // Android / desktop: direct download
     const a = document.createElement('a');
     a.href = resultImage.src;
     a.download = `happy40_tal_${selectedDecade}.jpg`;
