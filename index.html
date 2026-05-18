@@ -11,7 +11,7 @@
         theme: {
             extend: {
                 "colors": {
-                    "primary": "#ff2d78",
+                    "primary": "#ff8800",
                     "on-primary": "#ffffff",
                     "background": "#0a0a0c",
                     "surface": "#151518",
@@ -19,8 +19,8 @@
                     "on-surface": "#ffffff",
                     "on-surface-variant": "#b0b0b5",
                     "outline": "#333338",
-                    "accent-glow": "rgba(255, 45, 120, 0.3)",
-                    "neon-pink": "#ff2d78",
+                    "accent-glow": "rgba(255, 136, 0, 0.3)",
+                    "neon-pink": "#ff8800",
                     "neon-cyan": "#00f3ff"
                 },
                 "borderRadius": {
@@ -61,7 +61,7 @@
     body {
         font-family: 'Rubik', sans-serif;
         min-height: max(884px, 100dvh);
-        background-image: radial-gradient(circle at 50% 0%, rgba(255, 45, 120, 0.05) 0%, transparent 50%);
+        background-image: radial-gradient(circle at 50% 0%, rgba(255, 136, 0, 0.05) 0%, transparent 50%);
     }
     /* CRT / old-TV scanlines overlay */
     body::after {
@@ -82,7 +82,7 @@
         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
     .neon-glow-text {
-        text-shadow: 0 0 10px rgba(255, 45, 120, 0.5), 0 0 20px rgba(255, 45, 120, 0.3);
+        text-shadow: 0 0 10px rgba(255, 136, 0, 0.5), 0 0 20px rgba(255, 136, 0, 0.3);
     }
     .cyan-glow-text {
         text-shadow: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3);
@@ -90,7 +90,7 @@
     .cyber-card {
         background: rgba(21, 21, 24, 0.8);
         backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 45, 120, 0.2);
+        border: 1px solid rgba(255, 136, 0, 0.2);
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     }
     .cyber-card-cyan {
@@ -100,11 +100,11 @@
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     }
     .neon-border {
-        border: 1px solid #ff2d78;
-        box-shadow: 0 0 10px rgba(255, 45, 120, 0.4), inset 0 0 5px rgba(255, 45, 120, 0.2);
+        border: 1px solid #ff8800;
+        box-shadow: 0 0 10px rgba(255, 136, 0, 0.4), inset 0 0 5px rgba(255, 136, 0, 0.2);
     }
     .shimmer-btn {
-        background: linear-gradient(135deg, #ff2d78 0%, #ff5e9e 50%, #ff2d78 100%);
+        background: linear-gradient(135deg, #ff8800 0%, #ff5e9e 50%, #ff8800 100%);
         background-size: 200% 200%;
         animation: shimmer 3s infinite linear;
     }
@@ -164,40 +164,40 @@
     <!-- Hero Section -->
     <section class="mb-stack-lg text-center">
         <p class="text-primary font-bold text-lg mb-3 tracking-wide" style="text-shadow:0 0 10px rgba(255,45,120,0.4)">✨ אתגר יום הולדת 40 של טל זגורי יוצא לדרך ✨</p>
-        <h2 class="font-headline-xl mb-6 leading-tight text-white" style="font-size:clamp(2rem,7vw,3.2rem)">לא צריך לחפש יותר תמונה משותפת מהארכיון, בשביל זה יש AI</h2>
+        <h2 class="font-headline-xl mb-6 leading-tight text-white" style="font-size:clamp(2rem,7vw,3.2rem);font-weight:900;">לא צריך לחפש יותר תמונה משותפת מהארכיון, בשביל זה יש AI</h2>
         <!-- Step-by-step guide -->
         <div class="max-w-[85%] mx-auto" dir="rtl">
             <div class="flex flex-col items-end gap-0">
                 <!-- Step 1 -->
                 <div class="flex items-center gap-3 w-full">
-                    <span class="text-on-surface-variant text-body-md text-right flex-1">מעלים תמונה שלכם</span>
                     <div class="flex flex-col items-center flex-shrink-0">
-                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,45,120,0.4)">1</div>
+                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,136,0,0.4)">1</div>
                         <div class="w-px h-6 bg-primary/30"></div>
                     </div>
+                    <span class="text-on-surface-variant text-body-md text-right flex-1">מעלים תמונה שלכם</span>
                 </div>
                 <!-- Step 2 -->
                 <div class="flex items-center gap-3 w-full">
-                    <span class="text-on-surface-variant text-body-md text-right flex-1">בוחרים עשור</span>
                     <div class="flex flex-col items-center flex-shrink-0">
-                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,45,120,0.4)">2</div>
+                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,136,0,0.4)">2</div>
                         <div class="w-px h-6 bg-primary/30"></div>
                     </div>
+                    <span class="text-on-surface-variant text-body-md text-right flex-1">בוחרים עשור</span>
                 </div>
                 <!-- Step 3 -->
                 <div class="flex items-center gap-3 w-full">
-                    <span class="text-on-surface-variant text-body-md text-right flex-1">מקבלים תמונה איתי מוכנה לסטורי</span>
                     <div class="flex flex-col items-center flex-shrink-0">
-                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,45,120,0.4)">3</div>
+                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,136,0,0.4)">3</div>
                         <div class="w-px h-6 bg-primary/30"></div>
                     </div>
+                    <span class="text-on-surface-variant text-body-md text-right flex-1">מקבלים תמונה איתי מוכנה לסטורי</span>
                 </div>
                 <!-- Step 4 -->
                 <div class="flex items-center gap-3 w-full">
-                    <span class="text-on-surface-variant text-body-md text-right flex-1">ברכה ותיוגים זה עליכם</span>
                     <div class="flex flex-col items-center flex-shrink-0">
-                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,45,120,0.4)">4</div>
+                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,136,0,0.4)">4</div>
                     </div>
+                    <span class="text-on-surface-variant text-body-md text-right flex-1">ברכה ותיוגים זה עליכם</span>
                 </div>
             </div>
         </div>
