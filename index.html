@@ -234,8 +234,8 @@
                 <span class="random-label text-xs font-bold text-center leading-tight px-1">תבחר<br>בשבילי</span>
             </button>
 
-            <button class="decade-tile rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border border-primary/20 hover:border-primary/50 aspect-square" data-decade="2020s">
-                <span class="text-xl mb-0.5">🎬</span>
+            <button class="decade-tile rounded-lg cyber-card flex flex-col items-center justify-center transition-all active:scale-95 border border-primary/20 hover:border-primary/50 aspect-square" data-decade="1920s">
+                <span class="text-xl mb-0.5">🎩</span>
                 <span class="decade-headline font-bold text-sm text-white">20's</span>
                 <span class="decade-label text-xs text-white/70">שנות ה-20</span>
             </button>
@@ -367,7 +367,7 @@ const decadePrompts = {
     "1990s": BASE_PROMPT + " — 1990s era. Hair: curtains haircut, frosted tips, slicked-back or messy bun, chunky highlights. Clothing: baggy flannel shirts, oversized band tees, cargo pants, Doc Martens or chunky sneakers, choker necklaces. Background: a suburban basement, blockbuster video store, or outdoor skate park with graffiti walls. Filter: disposable camera aesthetic — high contrast, slightly washed-out greens, flash-blown whites, red-eye glow, slight vignette. Photography feel: Fujifilm QuickSnap, off-center composition, harsh flash shadows.",
     "2000s": BASE_PROMPT + " — 2000s Y2K era. Hair: highlights with chunky lowlights, scene side-swept bangs, spiky tips. Clothing: Von Dutch caps, velour Juicy Couture tracksuits, low-rise jeans with rhinestones, platform flip-flops, Von Dutch or Ed Hardy prints. Background: a suburban bedroom with posters on walls, a shopping mall food court, or a house party with Christmas lights strung up. Filter: early iPhone/digital camera overexposure, blown-out highlights, slightly purple-tinted shadows, heavy vignette. Photography feel: Sony Cybershot point-and-shoot, slightly noisy sensor, over-sharpened edges.",
     "2010s": BASE_PROMPT + " — 2010s era. Hair: undercut, man bun, or ombre dye job, perfectly tousled. Clothing: skinny jeans, flannel shirts, beanies, vintage band tees, Chelsea boots, or Lululemon leggings. Background: a trendy coffee shop with exposed brick and Edison bulbs, a rooftop with a city skyline, or a farmer's market. Filter: VSCO A4 — lifted shadows, faded blacks, warm orange-teal split tone, slight grain, slightly desaturated skin. Photography feel: iPhone 6 shot, perfectly square crop tendency, slightly HDR look.",
-    "2020s": BASE_PROMPT + " — 2020s era. Hair: e-girl curtain bangs, bleached or pastel dye, buzz cut with fade. Clothing: oversized hoodies, vintage thrift-store fits, biker shorts, chunky New Balance sneakers, mini bags. Background: a moody neon-lit bedroom with LED strip lights, an aesthetic cafe with plants everywhere, or a rooftop golden-hour shoot. Filter: cinematic Lightroom preset — deep crushed blacks, boosted highlights, subtle film grain, cool-toned with warm skin preservation, letterbox bars. Photography feel: iPhone ProRAW, intentional film emulation, Halide or VSCO app aesthetic.",
+    "1920s": BASE_PROMPT + " — 1920s era. Strictly black-and-white or sepia-toned photograph. Hair: slicked-back pomade for men, finger waves or bobbed hair for women. Clothing: three-piece suits, bowler hats, pocket squares, Oxford shoes for men; drop-waist flapper dresses, long pearl necklaces, feathered headbands for women. Background: a grand Hollywood studio set, a jazz club with art-deco arches, or a cobblestone street with vintage automobiles. Filter: heavy grain, faded blacks, blown highlights, vignette edges, slight sepia wash — looks like an authentic 1920s silver gelatin print. Photography feel: early box camera, shallow depth of field, formal posed composition.",
     "future": BASE_PROMPT + " — 2050 futuristic era. Both people aged naturally approximately 30 years — silver or salt-and-pepper hair, distinguished facial lines, graceful aging. Clothing: sleek form-fitting metallic or iridescent fabric, minimalist silhouettes, subtle tech accessories. Background: a gleaming smart-city rooftop terrace with holographic cityscapes, floating vehicles in the distance, bio-luminescent plants. Filter: ultra-clean digital sensor, zero noise, perfect exposure, slight chromatic aberration at edges, cool blue-cyan color science with warm preserved skin tones. Photography feel: computational photography from a future device — hyper-resolved, dream-sharp, almost too perfect."
 };
 
@@ -380,7 +380,7 @@ let selectedDecade = "1980s"; // will be overridden by random default
 
 // Random decade button
 // ============================================================
-const DECADES = ['1970s', '1980s', '1990s', '2000s', '2010s', '2020s', 'future'];
+const DECADES = ['1970s', '1980s', '1990s', '2000s', '2010s', '1920s', 'future'];
 const randomBtn = document.getElementById('random-decade-btn');
 function pickRandom() {
     const pick = DECADES[Math.floor(Math.random() * DECADES.length)];
