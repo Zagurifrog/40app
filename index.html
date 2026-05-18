@@ -63,6 +63,21 @@
         min-height: max(884px, 100dvh);
         background-image: radial-gradient(circle at 50% 0%, rgba(255, 45, 120, 0.05) 0%, transparent 50%);
     }
+    /* CRT / old-TV scanlines overlay */
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 3px,
+            rgba(0, 0, 0, 0.10) 3px,
+            rgba(0, 0, 0, 0.10) 4px
+        );
+    }
     .material-symbols-outlined {
         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
@@ -148,21 +163,49 @@
 
     <!-- Hero Section -->
     <section class="mb-stack-lg text-center">
-        <div class="inline-block mb-4 px-4 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary text-label-sm font-label-sm tracking-wider uppercase">
-            אתגר יום הולדת 40 של טל זגורי יוצא לדרך ✨
-        </div>
-        <h2 class="font-headline-xl text-headline-xl mb-4 leading-none text-white">למה צריך למצוא תמונה, אם אפשר לג׳נרט?</h2>
-        <div class="text-on-surface-variant text-body-md max-w-[85%] mx-auto space-y-1">
-            <p>1. מעלים תמונה שלכם</p>
-            <p>2. בוחרים עשור</p>
-            <p>3. מקבלים תמונה איתי מוכנה לסטורי</p>
-            <p>4. ברכה ותיוגים זה עליכם</p>
+        <p class="text-primary font-bold text-lg mb-3 tracking-wide" style="text-shadow:0 0 10px rgba(255,45,120,0.4)">✨ אתגר יום הולדת 40 של טל זגורי יוצא לדרך ✨</p>
+        <h2 class="font-headline-xl mb-6 leading-tight text-white" style="font-size:clamp(2rem,7vw,3.2rem)">לא צריך לחפש יותר תמונה משותפת מהארכיון, בשביל זה יש AI</h2>
+        <!-- Step-by-step guide -->
+        <div class="max-w-[85%] mx-auto" dir="rtl">
+            <div class="flex flex-col items-end gap-0">
+                <!-- Step 1 -->
+                <div class="flex items-center gap-3 w-full">
+                    <span class="text-on-surface-variant text-body-md text-right flex-1">מעלים תמונה שלכם</span>
+                    <div class="flex flex-col items-center flex-shrink-0">
+                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,45,120,0.4)">1</div>
+                        <div class="w-px h-6 bg-primary/30"></div>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="flex items-center gap-3 w-full">
+                    <span class="text-on-surface-variant text-body-md text-right flex-1">בוחרים עשור</span>
+                    <div class="flex flex-col items-center flex-shrink-0">
+                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,45,120,0.4)">2</div>
+                        <div class="w-px h-6 bg-primary/30"></div>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="flex items-center gap-3 w-full">
+                    <span class="text-on-surface-variant text-body-md text-right flex-1">מקבלים תמונה איתי מוכנה לסטורי</span>
+                    <div class="flex flex-col items-center flex-shrink-0">
+                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,45,120,0.4)">3</div>
+                        <div class="w-px h-6 bg-primary/30"></div>
+                    </div>
+                </div>
+                <!-- Step 4 -->
+                <div class="flex items-center gap-3 w-full">
+                    <span class="text-on-surface-variant text-body-md text-right flex-1">ברכה ותיוגים זה עליכם</span>
+                    <div class="flex flex-col items-center flex-shrink-0">
+                        <div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-sm" style="box-shadow:0 0 8px rgba(255,45,120,0.4)">4</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Upload Section -->
     <section class="mb-stack-md">
-        <h3 class="font-headline-lg-mobile text-headline-lg-mobile mb-4 text-right text-white">העלו תמונה שלכם</h3>
+        <h3 class="font-headline-lg-mobile text-headline-lg-mobile mb-4 text-right text-white">קודם כל, תעלו תמונה שלכם</h3>
         <label class="flex flex-col items-center justify-center w-full aspect-video rounded-lg border-2 border-dashed border-primary/30 bg-surface hover:border-primary/60 transition-all cursor-pointer group relative overflow-hidden" for="photo-upload" id="upload-label">
             <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" id="upload-hover-bg"></div>
             <img alt="תצוגה מקדימה" class="hidden" id="upload-preview"/>
@@ -182,7 +225,7 @@
 
     <!-- Decade Selector -->
     <section class="mb-stack-md overflow-hidden">
-        <h3 class="font-headline-lg-mobile text-headline-lg-mobile mb-4 text-right text-white">בחרו עשור למסע</h3>
+        <h3 class="font-headline-lg-mobile text-headline-lg-mobile mb-4 text-right text-white">איזה עשור הכי מחמיא לנו?</h3>
         <div class="flex gap-stack-sm overflow-x-auto no-scrollbar pb-4 -mx-gutter px-gutter" dir="rtl">
 
             <!-- Random decade tile -->
