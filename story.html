@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>How We Built Tal's 40th Birthday AI App</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<title>איך בנינו את אפליקציית יום ההולדת של טל</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Rubik', sans-serif;
     background: #0d0d10;
     color: #e8e8f0;
-    line-height: 1.6;
+    line-height: 1.7;
+    direction: rtl;
   }
-
-  /* CRT scanlines */
   body::after {
     content: '';
     position: fixed;
@@ -24,69 +23,83 @@
     background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px);
   }
 
+  /* ── Hero ── */
   .hero {
     text-align: center;
-    padding: 80px 24px 60px;
-    background: radial-gradient(ellipse at 50% 0%, rgba(255,136,0,0.12) 0%, transparent 60%);
-    border-bottom: 1px solid rgba(255,136,0,0.15);
+    padding: 80px 24px 64px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,136,0,0.13) 0%, transparent 65%);
+    border-bottom: 1px solid rgba(255,136,0,0.12);
   }
   .hero-tag {
     display: inline-block;
     font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     color: #ff8800;
     border: 1px solid rgba(255,136,0,0.4);
     border-radius: 99px;
-    padding: 4px 14px;
-    margin-bottom: 20px;
+    padding: 5px 16px;
+    margin-bottom: 24px;
   }
   .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-size: clamp(2rem, 5.5vw, 4rem);
     font-weight: 900;
     color: #fff;
-    line-height: 1.1;
-    margin-bottom: 16px;
+    line-height: 1.15;
+    margin-bottom: 18px;
   }
   .hero h1 span { color: #ff8800; }
-  .hero p {
-    font-size: 18px;
-    color: #999;
-    max-width: 540px;
-    margin: 0 auto 32px;
+  .hero .subtitle {
+    font-size: 17px;
+    color: #888;
+    max-width: 560px;
+    margin: 0 auto 36px;
   }
   .hero-link {
     display: inline-block;
     background: #ff8800;
     color: #fff;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 15px;
-    padding: 12px 28px;
+    padding: 13px 32px;
     border-radius: 99px;
     text-decoration: none;
-    box-shadow: 0 0 20px rgba(255,136,0,0.4);
+    box-shadow: 0 0 24px rgba(255,136,0,0.45);
+    transition: box-shadow 0.2s;
+  }
+  .hero-link:hover { box-shadow: 0 0 36px rgba(255,136,0,0.65); }
+
+  /* ── Layout ── */
+  .container { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── Chapter intro ── */
+  .chapter-intro {
+    padding: 56px 0 8px;
+    text-align: center;
+  }
+  .chapter-intro p {
+    font-size: 18px;
+    color: #888;
+    max-width: 580px;
+    margin: 0 auto;
   }
 
-  .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
-
-  /* Timeline */
-  .timeline { padding: 60px 0; }
+  /* ── Timeline ── */
+  .timeline { padding: 48px 0 60px; }
   .timeline-item {
     display: grid;
-    grid-template-columns: 52px 1fr;
+    grid-template-columns: 1fr 52px;
     gap: 0 20px;
-    margin-bottom: 52px;
+    margin-bottom: 56px;
     position: relative;
   }
-  .timeline-item:not(:last-child)::after {
-    content: '';
+  .timeline-item:not(:last-child) .step-line {
     position: absolute;
-    left: 25px;
+    right: 25px;
     top: 52px;
-    bottom: -52px;
+    bottom: -56px;
     width: 2px;
-    background: linear-gradient(to bottom, rgba(255,136,0,0.4), rgba(255,136,0,0.05));
+    background: linear-gradient(to bottom, rgba(255,136,0,0.35), rgba(255,136,0,0.04));
   }
   .step-circle {
     width: 52px;
@@ -96,307 +109,310 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
-    background: rgba(255,136,0,0.08);
-    box-shadow: 0 0 16px rgba(255,136,0,0.25);
+    font-size: 22px;
+    background: rgba(255,136,0,0.07);
+    box-shadow: 0 0 18px rgba(255,136,0,0.22);
     flex-shrink: 0;
     position: relative;
     z-index: 1;
+    order: 2;
   }
-  .step-body { padding-top: 8px; }
+  .step-body { order: 1; padding-top: 6px; }
   .step-label {
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #ff8800;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
   }
   .step-title {
-    font-size: 22px;
-    font-weight: 800;
+    font-size: 24px;
+    font-weight: 900;
     color: #fff;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
     line-height: 1.2;
   }
   .step-body p {
-    font-size: 15px;
+    font-size: 15.5px;
     color: #aaa;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
-  .step-body p strong { color: #ddd; }
-  .why-box {
+  .step-body p strong { color: #ddd; font-weight: 700; }
+  .step-body p em { color: #ff8800; font-style: normal; }
+
+  .insight {
     background: rgba(255,136,0,0.06);
-    border: 1px solid rgba(255,136,0,0.2);
-    border-radius: 10px;
-    padding: 12px 16px;
+    border-right: 3px solid #ff8800;
+    border-radius: 0 10px 10px 0;
+    padding: 12px 18px 12px 14px;
     font-size: 14px;
     color: #bbb;
-    margin-top: 12px;
+    margin-top: 14px;
+    font-style: italic;
   }
-  .why-box::before { content: '💡 Why: '; font-weight: 700; color: #ff8800; }
+  .insight::before { content: '💡 '; }
 
-  /* Bug cards */
+  /* ── Bug cards ── */
   .bug-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
     gap: 12px;
-    margin-top: 16px;
+    margin-top: 18px;
   }
   .bug-card {
     background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    padding: 14px;
-    font-size: 13px;
-    color: #999;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 13.5px;
+    color: #888;
+    line-height: 1.55;
   }
   .bug-card .bug-title {
-    font-weight: 700;
+    font-weight: 800;
     color: #fff;
     font-size: 14px;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    margin-bottom: 6px;
   }
 
-  /* Feature pills */
-  .features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 14px;
-  }
+  /* ── Pills ── */
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   .pill {
     font-size: 13px;
     font-weight: 600;
-    padding: 4px 12px;
+    padding: 4px 13px;
     border-radius: 99px;
     background: rgba(255,136,0,0.1);
     border: 1px solid rgba(255,136,0,0.3);
     color: #ff8800;
   }
-  .pill.white {
-    background: rgba(255,255,255,0.05);
-    border-color: rgba(255,255,255,0.15);
-    color: #ccc;
+  .pill.muted {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.12);
+    color: #bbb;
   }
 
-  /* Result section */
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid rgba(255,255,255,0.06); }
+
+  /* ── Result ── */
   .result-section {
-    background: linear-gradient(135deg, rgba(255,136,0,0.08), rgba(255,136,0,0.02));
+    background: linear-gradient(135deg, rgba(255,136,0,0.09), rgba(255,136,0,0.02));
     border: 1px solid rgba(255,136,0,0.2);
-    border-radius: 16px;
-    padding: 36px;
+    border-radius: 18px;
+    padding: 44px 36px;
     text-align: center;
-    margin: 40px 0 80px;
+    margin: 20px 0 80px;
   }
   .result-section h2 {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 900;
     color: #fff;
     margin-bottom: 10px;
   }
-  .result-section p { color: #999; font-size: 15px; margin-bottom: 24px; }
+  .result-section > p { color: #888; font-size: 16px; margin-bottom: 32px; }
   .stat-row {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 48px;
     flex-wrap: wrap;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
   }
-  .stat { text-align: center; }
-  .stat-number { font-size: 36px; font-weight: 900; color: #ff8800; line-height: 1; }
-  .stat-label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
-
+  .stat-number { font-size: 40px; font-weight: 900; color: #ff8800; line-height: 1; }
+  .stat-label { font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 5px; }
   .stitch-badge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(66,133,244,0.1);
-    border: 1px solid rgba(66,133,244,0.3);
+    background: rgba(66,133,244,0.09);
+    border: 1px solid rgba(66,133,244,0.28);
     border-radius: 99px;
-    padding: 6px 16px;
+    padding: 7px 18px;
     font-size: 13px;
     color: #7ab4ff;
     font-weight: 600;
-    margin-top: 8px;
-  }
-
-  hr.divider {
-    border: none;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    margin: 0;
+    margin-top: 12px;
   }
 </style>
 </head>
 <body>
 
+<!-- ── Hero ── -->
 <div class="hero">
-  <div class="hero-tag">🎂 Birthday project retrospective</div>
-  <h1>How We Built<br><span>Tal's 40th Birthday</span><br>AI Photo App</h1>
-  <p>A single-file web app that lets party guests generate an AI photo of themselves with Tal across any decade — from the 1920s to 2050.</p>
-  <a class="hero-link" href="https://zagurifrog.github.io/40app/" target="_blank">See the live app →</a>
+  <div class="hero-tag">🎂 סיפור הפרויקט</div>
+  <h1>איך בנינו אפליקציית AI<br/>לכבוד יום ההולדת<br/><span>ה-40 של טל</span></h1>
+  <p class="subtitle">אפליקציית ווב שמאפשרת לאורחי המסיבה לקבל תמונת AI שלהם עם טל — בסגנון כל עשור, מ-1920 ועד 2050.</p>
+  <a class="hero-link" href="https://zagurifrog.github.io/40app/" target="_blank">לאפליקציה החיה ←</a>
 </div>
 
-<hr class="divider"/>
+<hr/>
 
 <div class="container">
+
+  <div class="chapter-intro">
+    <p>זה לא היה פרויקט מסודר עם ספציפיקציה. זה היה "יהיה כיף לאורחים" שהפך, צעד אחר צעד, למשהו אמיתי.</p>
+  </div>
+
   <div class="timeline">
 
-    <!-- Step 1 -->
+    <!-- 1 -->
     <div class="timeline-item">
+      <div class="step-line"></div>
+      <div class="step-body">
+        <div class="step-label">שלב 1 — עיצוב</div>
+        <div class="step-title">הכל התחיל ב-Google Stitch</div>
+        <p>לפני שנכתב שורת קוד אחת, עברנו איטרציות עיצוב שלמות ב-<strong>Google Stitch</strong>. ניסינו גוונים, פונטים, פריסות כרטיסים, ואיך תראה חוויית 9:16 Story על מסך הנייד.</p>
+        <p>הגענו לשפה ויזואלית ברורה: <em>רקע שחור עמוק, ניאון כתום, פונט Rubik כבד, RTL מלא בעברית</em>. לא הייתה שאלה של "נראה טוב?" — הוא נראה טוב עוד לפני הקוד.</p>
+        <div class="insight">כשמגיעים לקוד עם עיצוב מוגמר — אין ניחושים. כל החלטה ויזואלית כבר התקבלה.</div>
+        <div class="pills">
+          <span class="pill muted">Dark cyberpunk</span>
+          <span class="pill muted">פונט Rubik 900</span>
+          <span class="pill muted">RTL עברית</span>
+          <span class="pill muted">פורמט 9:16</span>
+          <span class="pill muted">אפקט ניאון glow</span>
+        </div>
+      </div>
       <div class="step-circle">🎨</div>
-      <div class="step-body">
-        <div class="step-label">Step 1 — Design</div>
-        <div class="step-title">UI designed in Google Stitch</div>
-        <p>The entire visual design — dark cyberpunk aesthetic, neon accents, Hebrew RTL layout, decade tiles, and the result screen — was iterated and finalized using <strong>Google Stitch</strong> before writing a single line of code.</p>
-        <p>Stitch let us rapidly try different color schemes, card layouts, and typography until the design felt right: dark background, neon glow effects, 9:16 Instagram Story output format.</p>
-        <div class="why-box">Starting in a design tool means the HTML build is just implementation — no layout guessing mid-code.</div>
-        <div class="features" style="margin-top:14px">
-          <span class="pill white">Dark cyberpunk theme</span>
-          <span class="pill white">Hebrew RTL</span>
-          <span class="pill white">Rubik font</span>
-          <span class="pill white">9:16 Story format</span>
-          <span class="pill white">Neon glow system</span>
-        </div>
-      </div>
     </div>
 
-    <!-- Step 2 -->
+    <!-- 2 -->
     <div class="timeline-item">
+      <div class="step-line"></div>
+      <div class="step-body">
+        <div class="step-label">שלב 2 — פיתוח</div>
+        <div class="step-title">קובץ HTML אחד. אין שרת. אין build.</div>
+        <p>כל האפליקציה — HTML, CSS, JavaScript — נמצאת בקובץ <strong>index.html</strong> אחד. Tailwind דרך CDN, Google Fonts, ו-JS ישיר. אף פעמון, אף שרפרף.</p>
+        <p>תמונת טל עצמה הוטמעה כ-<strong>Base64</strong> ישירות בתוך הקובץ — כדי שהיא תהיה שם תמיד, בכל מכשיר, גם בלי חיבור מוצלח לרשת. אורחים העלו תמונה שלהם דרך FileReader API, ומשם הכל זורם.</p>
+        <div class="insight">פרויקט מסיבה לא צריך Kubernetes. קובץ אחד ב-GitHub Pages = אפס נקודות כשל.</div>
+        <div class="pills">
+          <span class="pill muted">Tailwind CDN</span>
+          <span class="pill muted">FileReader API</span>
+          <span class="pill muted">Base64 embed</span>
+          <span class="pill muted">GitHub Pages</span>
+        </div>
+      </div>
       <div class="step-circle">🏗️</div>
-      <div class="step-body">
-        <div class="step-label">Step 2 — Build</div>
-        <div class="step-title">Single-file HTML app</div>
-        <p>The full app lives in one <strong>index.html</strong> — no build tools, no npm, no server. Tailwind CSS via CDN, inline JS, and Google Fonts. Guests can use it directly from GitHub Pages.</p>
-        <p>Tal's portrait was encoded as Base64 and embedded directly in the file, so every generated image always includes her — no external assets to load or lose.</p>
-        <div class="why-box">Zero infrastructure = zero failure points at a party. One URL, works offline after first load.</div>
-        <div class="features">
-          <span class="pill white">Tailwind CDN</span>
-          <span class="pill white">FileReader API</span>
-          <span class="pill white">Base64 photo embed</span>
-          <span class="pill white">GitHub Pages</span>
-        </div>
-      </div>
     </div>
 
-    <!-- Step 3 -->
+    <!-- 3 -->
     <div class="timeline-item">
+      <div class="step-line"></div>
+      <div class="step-body">
+        <div class="step-label">שלב 3 — חיבור ל-AI</div>
+        <div class="step-title">Gemini, אבל לא בלי מאבק</div>
+        <p>הרעיון: שולחים שתי תמונות (טל + האורח) ופרומפט של עשור ← מקבלים תמונה AI מוכנה לסטורי. בתיאוריה פשוט. בפועל — כל מודל שבחרנו הוחלף.</p>
+        <p>התחלנו עם <code>gemini-2.0-flash-preview-image-generation</code>, עברנו דרך <code>gemini-2.0-flash-exp-image-generation</code>, ונחתנו על <strong>gemini-2.5-flash-image</strong> — שנמצא ע"י שאילתה חיה ל-API כדי לראות מה בכלל קיים.</p>
+        <div class="insight">שמות מודלים משתנים בלי הודעה מוקדמת. תמיד תבדוק מה חי מול ה-API עצמו — לא מה כתוב בדוקומנטציה.</div>
+      </div>
       <div class="step-circle">🔑</div>
-      <div class="step-body">
-        <div class="step-label">Step 3 — API</div>
-        <div class="step-title">Connecting Gemini Image Generation</div>
-        <p>Used <strong>Gemini 2.5 Flash Image</strong> via Google AI Studio. The app sends two images (Tal's photo + guest's photo) plus a decade-specific prompt, and receives a generated composite image back.</p>
-        <p>Model selection took a few attempts — <code>gemini-2.0-flash-preview-image-generation</code> was deprecated, then <code>gemini-2.0-flash-exp-image-generation</code>, finally landing on <code>gemini-2.5-flash-image</code>.</p>
-        <div class="why-box">Gemini's image generation can take both photos as visual reference, making the output feel personal to each guest.</div>
-      </div>
     </div>
 
-    <!-- Step 4 -->
+    <!-- 4 -->
     <div class="timeline-item">
-      <div class="step-circle">🐛</div>
+      <div class="step-line"></div>
       <div class="step-body">
-        <div class="step-label">Step 4 — Debug marathon</div>
-        <div class="step-title">Everything that broke (and why)</div>
+        <div class="step-label">שלב 4 — מרתון הבאגים</div>
+        <div class="step-title">שישה באגים. שישה שיעורים.</div>
         <div class="bug-grid">
           <div class="bug-card">
-            <div class="bug-title">🔄 Placeholder replaced twice</div>
-            The validation check <code>if (key === "PASTE...")</code> also contained the placeholder — both got replaced with the real value, so the check always fired.
+            <div class="bug-title">🔄 ה-placeholder הוחלף פעמיים</div>
+            בדיקת הולידציה <code>if (key === "PASTE...")</code> הכילה גם היא את ה-placeholder — שניהם הוחלפו בערך האמיתי, אז הבדיקה תמיד ירתה.
           </div>
           <div class="bug-card">
-            <div class="bug-title">🏷️ Wrong model name</div>
-            Google renamed the model mid-session. Had to query the live API for the actual model list to find <code>gemini-2.5-flash-image</code>.
+            <div class="bug-title">🏷️ שם מודל שגוי</div>
+            Google שינתה שמות בשקט. נאלצנו לשלוח בקשה חיה ל-API כדי לגלות את הרשימה האמיתית של המודלים הזמינים.
           </div>
           <div class="bug-card">
-            <div class="bug-title">🔑 API key leaked</div>
-            GitHub's secret scanner found the key in the public repo within minutes and invalidated it. Twice.
+            <div class="bug-title">🔑 מפתח API דלף</div>
+            הסורק הסודי של GitHub מצא את המפתח ב-repo הציבורי תוך דקות ובטל אותו. זה קרה פעמיים.
           </div>
           <div class="bug-card">
-            <div class="bug-title">🐪 inlineData vs inline_data</div>
-            The API response used camelCase <code>inlineData</code> but the parser looked for snake_case <code>inline_data</code> — silent miss, no image.
+            <div class="bug-title">🐪 inlineData לא inline_data</div>
+            ה-API מחזיר camelCase אבל הפרסר חיפש snake_case. שתיקה מושלמת — אין תמונה, אין שגיאה.
           </div>
           <div class="bug-card">
-            <div class="bug-title">🚫 IMAGE_OTHER block</div>
-            Gemini refused to generate photorealistic images of real identifiable people. Added a friendly error message for guests.
+            <div class="bug-title">🚫 IMAGE_OTHER</div>
+            Gemini סירב לייצר תמונות פוטוריאליסטיות של אנשים אמיתיים. הוספנו הודעת שגיאה ידידותית לאורחים.
           </div>
           <div class="bug-card">
-            <div class="bug-title">📦 Images too large</div>
-            Tal's embedded photo was 440KB — too many tokens. Added client-side resize to 768px before sending.
+            <div class="bug-title">📦 תמונה גדולה מדי</div>
+            תמונת טל שוקלת 440KB — יותר מדי טוקנים. הוספנו resize ל-768px בצד הלקוח לפני השליחה.
           </div>
         </div>
       </div>
+      <div class="step-circle">🐛</div>
     </div>
 
-    <!-- Step 5 -->
+    <!-- 5 -->
     <div class="timeline-item">
+      <div class="step-line"></div>
+      <div class="step-body">
+        <div class="step-label">שלב 5 — אבטחה</div>
+        <div class="step-title">Cloudflare Worker: הפתרון האמיתי</div>
+        <p>אחרי שמפתח ה-API בוטל פעמיים, הגיע הזמן לפתרון אמיתי. הקמנו <strong>Cloudflare Worker</strong> — פונקציה serverless בחינם — שיושבת בין האפליקציה לבין Gemini.</p>
+        <p>המפתח חי כ-<em>secret environment variable</em> בתוך Cloudflare. הקוד הציבורי ב-GitHub לא מכיל מפתח בכלל. האפליקציה קוראת ל-<code>gemini-proxy.zaguri.workers.dev</code> — ה-worker מוסיף את המפתח ומעביר.</p>
+        <div class="insight">כל מפתח ב-repo ציבורי ייבדק ויבוטל תוך דקות. Worker proxy הוא הפתרון היחיד לאפליקציית client-side.</div>
+        <div class="pills">
+          <span class="pill muted">Cloudflare Workers (free)</span>
+          <span class="pill muted">Secret env var</span>
+          <span class="pill muted">CORS headers</span>
+        </div>
+      </div>
       <div class="step-circle">🛡️</div>
-      <div class="step-body">
-        <div class="step-label">Step 5 — Security</div>
-        <div class="step-title">Cloudflare Worker as API proxy</div>
-        <p>After the API key kept getting leaked from the public repo, we set up a <strong>Cloudflare Worker</strong> — a free serverless function that sits between the app and Gemini. The key lives as a secret environment variable in Cloudflare, never in the code.</p>
-        <p>The app now calls <code>gemini-proxy.zaguri.workers.dev</code> instead of Google directly. The worker adds the key and forwards the request.</p>
-        <div class="why-box">Any key in a public GitHub repo gets found and invalidated by automated scanners within minutes. A proxy is the only real fix for a client-side app.</div>
-        <div class="features">
-          <span class="pill white">Cloudflare Worker (free tier)</span>
-          <span class="pill white">Secret env variable</span>
-          <span class="pill white">CORS headers</span>
-        </div>
-      </div>
     </div>
 
-    <!-- Step 6 -->
+    <!-- 6 -->
     <div class="timeline-item">
-      <div class="step-circle">✨</div>
       <div class="step-body">
-        <div class="step-label">Step 6 — Polish</div>
-        <div class="step-title">UX & design iterations</div>
-        <p>Once the core flow worked, we iterated on everything visible:</p>
-        <div class="features">
-          <span class="pill">🎲 Random decade button</span>
-          <span class="pill">🟠 Orange color scheme</span>
-          <span class="pill">📺 CRT scanline overlay</span>
-          <span class="pill">4×2 Decade grid</span>
-          <span class="pill">Decade emojis</span>
-          <span class="pill">Step-by-step guide</span>
-          <span class="pill">Hero redesign</span>
-          <span class="pill">Rubik 900 title</span>
-          <span class="pill">iOS download fix</span>
-          <span class="pill">Friendly error messages</span>
-          <span class="pill">1920s B&W Hollywood decade</span>
-          <span class="pill">2050 futuristic decade</span>
+        <div class="step-label">שלב 6 — ליטוש</div>
+        <div class="step-title">מה שהופך אפליקציה לחוויה</div>
+        <p>אחרי שהכל עבד — התחלנו לשחק. כל שינוי קטן הפך את הפרויקט למשהו שאנשים ירצו להשתמש בו, לא רק לנסות פעם אחת.</p>
+        <div class="pills">
+          <span class="pill">🎲 כפתור "תבחר בשבילי" זהוב</span>
+          <span class="pill">📺 אפקט גלי טלוויזיה ישנה</span>
+          <span class="pill">🟠 ערכת צבעים כתומה</span>
+          <span class="pill">רשת 4×2 לעשורים</span>
+          <span class="pill">אימוג׳י לכל עשור</span>
+          <span class="pill">מדריך צעד-אחר-צעד</span>
+          <span class="pill">עיצוב מחדש של ה-Hero</span>
+          <span class="pill">Rubik 900 בכותרת</span>
+          <span class="pill">תיקון שמירה על iOS</span>
+          <span class="pill">שגיאות ידידותיות</span>
+          <span class="pill">1920s הוליווד B&W</span>
+          <span class="pill">2050 עתיד עם הזדקנות</span>
         </div>
       </div>
+      <div class="step-circle">✨</div>
     </div>
 
   </div><!-- /timeline -->
 
   <!-- Result -->
   <div class="result-section">
-    <h2>The final result 🎉</h2>
-    <p>A live, shareable web app — ready for the party.</p>
+    <h2>התוצאה הסופית 🎉</h2>
+    <p>אפליקציה חיה, פתוחה לכולם, מוכנה למסיבה.</p>
     <div class="stat-row">
       <div class="stat">
         <div class="stat-number">8</div>
-        <div class="stat-label">Decades</div>
+        <div class="stat-label">עשורים</div>
       </div>
       <div class="stat">
         <div class="stat-number">1</div>
-        <div class="stat-label">HTML file</div>
+        <div class="stat-label">קובץ HTML</div>
       </div>
       <div class="stat">
-        <div class="stat-number">$0</div>
-        <div class="stat-label">Hosting cost</div>
+        <div class="stat-number">₪0</div>
+        <div class="stat-label">עלות אחסון</div>
       </div>
       <div class="stat">
         <div class="stat-number">24h</div>
-        <div class="stat-label">Build time</div>
+        <div class="stat-label">זמן פיתוח</div>
       </div>
     </div>
-    <a class="hero-link" href="https://zagurifrog.github.io/40app/" target="_blank">zagurifrog.github.io/40app</a>
+    <a class="hero-link" href="https://zagurifrog.github.io/40app/" target="_blank">zagurifrog.github.io/40app ←</a>
     <br/>
-    <div class="stitch-badge">🎨 UI design iterations powered by Google Stitch</div>
+    <div class="stitch-badge">🎨 איטרציות העיצוב בוצעו עם Google Stitch</div>
   </div>
 
 </div><!-- /container -->
