@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How We Built Tal's 40th Birthday AI App</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0d0d10;
+    color: #e8e8f0;
+    line-height: 1.6;
+  }
+
+  /* CRT scanlines */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px);
+  }
+
+  .hero {
+    text-align: center;
+    padding: 80px 24px 60px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,136,0,0.12) 0%, transparent 60%);
+    border-bottom: 1px solid rgba(255,136,0,0.15);
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ff8800;
+    border: 1px solid rgba(255,136,0,0.4);
+    border-radius: 99px;
+    padding: 4px 14px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero h1 span { color: #ff8800; }
+  .hero p {
+    font-size: 18px;
+    color: #999;
+    max-width: 540px;
+    margin: 0 auto 32px;
+  }
+  .hero-link {
+    display: inline-block;
+    background: #ff8800;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 12px 28px;
+    border-radius: 99px;
+    text-decoration: none;
+    box-shadow: 0 0 20px rgba(255,136,0,0.4);
+  }
+
+  .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  /* Timeline */
+  .timeline { padding: 60px 0; }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 0 20px;
+    margin-bottom: 52px;
+    position: relative;
+  }
+  .timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 25px;
+    top: 52px;
+    bottom: -52px;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(255,136,0,0.4), rgba(255,136,0,0.05));
+  }
+  .step-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid #ff8800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background: rgba(255,136,0,0.08);
+    box-shadow: 0 0 16px rgba(255,136,0,0.25);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-body { padding-top: 8px; }
+  .step-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #ff8800;
+    margin-bottom: 4px;
+  }
+  .step-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .step-body p {
+    font-size: 15px;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+  .step-body p strong { color: #ddd; }
+  .why-box {
+    background: rgba(255,136,0,0.06);
+    border: 1px solid rgba(255,136,0,0.2);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #bbb;
+    margin-top: 12px;
+  }
+  .why-box::before { content: '💡 Why: '; font-weight: 700; color: #ff8800; }
+
+  /* Bug cards */
+  .bug-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .bug-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 13px;
+    color: #999;
+  }
+  .bug-card .bug-title {
+    font-weight: 700;
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Feature pills */
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .pill {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 99px;
+    background: rgba(255,136,0,0.1);
+    border: 1px solid rgba(255,136,0,0.3);
+    color: #ff8800;
+  }
+  .pill.white {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.15);
+    color: #ccc;
+  }
+
+  /* Result section */
+  .result-section {
+    background: linear-gradient(135deg, rgba(255,136,0,0.08), rgba(255,136,0,0.02));
+    border: 1px solid rgba(255,136,0,0.2);
+    border-radius: 16px;
+    padding: 36px;
+    text-align: center;
+    margin: 40px 0 80px;
+  }
+  .result-section h2 {
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .result-section p { color: #999; font-size: 15px; margin-bottom: 24px; }
+  .stat-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .stat { text-align: center; }
+  .stat-number { font-size: 36px; font-weight: 900; color: #ff8800; line-height: 1; }
+  .stat-label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+
+  .stitch-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(66,133,244,0.1);
+    border: 1px solid rgba(66,133,244,0.3);
+    border-radius: 99px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: #7ab4ff;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">🎂 Birthday project retrospective</div>
+  <h1>How We Built<br><span>Tal's 40th Birthday</span><br>AI Photo App</h1>
+  <p>A single-file web app that lets party guests generate an AI photo of themselves with Tal across any decade — from the 1920s to 2050.</p>
+  <a class="hero-link" href="https://zagurifrog.github.io/40app/" target="_blank">See the live app →</a>
+</div>
+
+<hr class="divider"/>
+
+<div class="container">
+  <div class="timeline">
+
+    <!-- Step 1 -->
+    <div class="timeline-item">
+      <div class="step-circle">🎨</div>
+      <div class="step-body">
+        <div class="step-label">Step 1 — Design</div>
+        <div class="step-title">UI designed in Google Stitch</div>
+        <p>The entire visual design — dark cyberpunk aesthetic, neon accents, Hebrew RTL layout, decade tiles, and the result screen — was iterated and finalized using <strong>Google Stitch</strong> before writing a single line of code.</p>
+        <p>Stitch let us rapidly try different color schemes, card layouts, and typography until the design felt right: dark background, neon glow effects, 9:16 Instagram Story output format.</p>
+        <div class="why-box">Starting in a design tool means the HTML build is just implementation — no layout guessing mid-code.</div>
+        <div class="features" style="margin-top:14px">
+          <span class="pill white">Dark cyberpunk theme</span>
+          <span class="pill white">Hebrew RTL</span>
+          <span class="pill white">Rubik font</span>
+          <span class="pill white">9:16 Story format</span>
+          <span class="pill white">Neon glow system</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="timeline-item">
+      <div class="step-circle">🏗️</div>
+      <div class="step-body">
+        <div class="step-label">Step 2 — Build</div>
+        <div class="step-title">Single-file HTML app</div>
+        <p>The full app lives in one <strong>index.html</strong> — no build tools, no npm, no server. Tailwind CSS via CDN, inline JS, and Google Fonts. Guests can use it directly from GitHub Pages.</p>
+        <p>Tal's portrait was encoded as Base64 and embedded directly in the file, so every generated image always includes her — no external assets to load or lose.</p>
+        <div class="why-box">Zero infrastructure = zero failure points at a party. One URL, works offline after first load.</div>
+        <div class="features">
+          <span class="pill white">Tailwind CDN</span>
+          <span class="pill white">FileReader API</span>
+          <span class="pill white">Base64 photo embed</span>
+          <span class="pill white">GitHub Pages</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="timeline-item">
+      <div class="step-circle">🔑</div>
+      <div class="step-body">
+        <div class="step-label">Step 3 — API</div>
+        <div class="step-title">Connecting Gemini Image Generation</div>
+        <p>Used <strong>Gemini 2.5 Flash Image</strong> via Google AI Studio. The app sends two images (Tal's photo + guest's photo) plus a decade-specific prompt, and receives a generated composite image back.</p>
+        <p>Model selection took a few attempts — <code>gemini-2.0-flash-preview-image-generation</code> was deprecated, then <code>gemini-2.0-flash-exp-image-generation</code>, finally landing on <code>gemini-2.5-flash-image</code>.</p>
+        <div class="why-box">Gemini's image generation can take both photos as visual reference, making the output feel personal to each guest.</div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="timeline-item">
+      <div class="step-circle">🐛</div>
+      <div class="step-body">
+        <div class="step-label">Step 4 — Debug marathon</div>
+        <div class="step-title">Everything that broke (and why)</div>
+        <div class="bug-grid">
+          <div class="bug-card">
+            <div class="bug-title">🔄 Placeholder replaced twice</div>
+            The validation check <code>if (key === "PASTE...")</code> also contained the placeholder — both got replaced with the real value, so the check always fired.
+          </div>
+          <div class="bug-card">
+            <div class="bug-title">🏷️ Wrong model name</div>
+            Google renamed the model mid-session. Had to query the live API for the actual model list to find <code>gemini-2.5-flash-image</code>.
+          </div>
+          <div class="bug-card">
+            <div class="bug-title">🔑 API key leaked</div>
+            GitHub's secret scanner found the key in the public repo within minutes and invalidated it. Twice.
+          </div>
+          <div class="bug-card">
+            <div class="bug-title">🐪 inlineData vs inline_data</div>
+            The API response used camelCase <code>inlineData</code> but the parser looked for snake_case <code>inline_data</code> — silent miss, no image.
+          </div>
+          <div class="bug-card">
+            <div class="bug-title">🚫 IMAGE_OTHER block</div>
+            Gemini refused to generate photorealistic images of real identifiable people. Added a friendly error message for guests.
+          </div>
+          <div class="bug-card">
+            <div class="bug-title">📦 Images too large</div>
+            Tal's embedded photo was 440KB — too many tokens. Added client-side resize to 768px before sending.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="timeline-item">
+      <div class="step-circle">🛡️</div>
+      <div class="step-body">
+        <div class="step-label">Step 5 — Security</div>
+        <div class="step-title">Cloudflare Worker as API proxy</div>
+        <p>After the API key kept getting leaked from the public repo, we set up a <strong>Cloudflare Worker</strong> — a free serverless function that sits between the app and Gemini. The key lives as a secret environment variable in Cloudflare, never in the code.</p>
+        <p>The app now calls <code>gemini-proxy.zaguri.workers.dev</code> instead of Google directly. The worker adds the key and forwards the request.</p>
+        <div class="why-box">Any key in a public GitHub repo gets found and invalidated by automated scanners within minutes. A proxy is the only real fix for a client-side app.</div>
+        <div class="features">
+          <span class="pill white">Cloudflare Worker (free tier)</span>
+          <span class="pill white">Secret env variable</span>
+          <span class="pill white">CORS headers</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="timeline-item">
+      <div class="step-circle">✨</div>
+      <div class="step-body">
+        <div class="step-label">Step 6 — Polish</div>
+        <div class="step-title">UX & design iterations</div>
+        <p>Once the core flow worked, we iterated on everything visible:</p>
+        <div class="features">
+          <span class="pill">🎲 Random decade button</span>
+          <span class="pill">🟠 Orange color scheme</span>
+          <span class="pill">📺 CRT scanline overlay</span>
+          <span class="pill">4×2 Decade grid</span>
+          <span class="pill">Decade emojis</span>
+          <span class="pill">Step-by-step guide</span>
+          <span class="pill">Hero redesign</span>
+          <span class="pill">Rubik 900 title</span>
+          <span class="pill">iOS download fix</span>
+          <span class="pill">Friendly error messages</span>
+          <span class="pill">1920s B&W Hollywood decade</span>
+          <span class="pill">2050 futuristic decade</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+
+  <!-- Result -->
+  <div class="result-section">
+    <h2>The final result 🎉</h2>
+    <p>A live, shareable web app — ready for the party.</p>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-number">8</div>
+        <div class="stat-label">Decades</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">1</div>
+        <div class="stat-label">HTML file</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">$0</div>
+        <div class="stat-label">Hosting cost</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">24h</div>
+        <div class="stat-label">Build time</div>
+      </div>
+    </div>
+    <a class="hero-link" href="https://zagurifrog.github.io/40app/" target="_blank">zagurifrog.github.io/40app</a>
+    <br/>
+    <div class="stitch-badge">🎨 UI design iterations powered by Google Stitch</div>
+  </div>
+
+</div><!-- /container -->
+</body>
+</html>
